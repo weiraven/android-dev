@@ -4,9 +4,6 @@ public class Color {
     int green;
     int blue;
 
-    public Color() {
-    }
-
     public Color(int r, int g, int b) {
         this.red = r;
         this.green = g;
@@ -25,6 +22,9 @@ public class Color {
         return this.blue;
     }
 
+    public int getColorValue() {
+        return android.graphics.Color.rgb(this.red, this.green, this.blue);
+    }
     public String getHexValue() {
         return String.format("#%02X%02X%02X", this.red, this.green, this.blue);
     }
