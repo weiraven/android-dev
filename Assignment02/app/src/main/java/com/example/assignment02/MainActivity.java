@@ -24,8 +24,12 @@ public class MainActivity extends AppCompatActivity {
         int green = seekBarGreen.getProgress();
         int blue = seekBarBlue.getProgress();
 
-        int color = android.graphics.Color.rgb(red, green, blue);
-        viewColor.setBackgroundColor(color);
+        Color color = new Color(red, green, blue);
+        int colorValue = android.graphics.Color.rgb(red, green, blue);
+
+        viewColor.setBackgroundColor(colorValue);
+        textViewColorHEX.setText("Color HEX: " + color.getHexValue());
+        textViewColorRGB.setText("Color RGB: " + color.getRgbValue());
     }
 
     @Override
