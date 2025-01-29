@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Assignment03</string>
+
+    <string name="title_discount_calculator">Discount Calculator</string>
+    <string name="label_item_price">Item Price:</string>
+    <string name="item_price_hint">Enter List Price</string>
+
+    <string name="label_sale_percent">Sale %</string>
+    <string name="radial_10">10%</string>
+    <string name="radial_15">15%</string>
+    <string name="radial_18">18%</string>
+    <string name="radial_custom">Custom</string>
+
+    <string name="label_custom_percent">Custom %:</string>
+    <string name="seekbar_default_percent">25%</string>
+
+    <string name="discount_default">Discount: 0.00</string>
+    <string name="final_price_default">Final Price: 0.00</string>
+
+    <string name="button_reset">Reset</string>
+    <string name="button_calculate">Calculate</string>
+
+</resources>
