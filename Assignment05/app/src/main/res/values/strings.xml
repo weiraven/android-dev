@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Assignment04</string>
+    <string name="welcome_text">Welcome !!</string>
+    <string name="start_button">Start</string>
+    <string name="create_user_title">Create User Info</string>
+    <string name="name_label">Name:</string>
+    <string name="email_label">Email:</string>
+    <string name="role_label">Role:</string>
+    <string name="name_hint">Enter Name</string>
+    <string name="email_hint">Enter Email</string>
+    <string name="student_radio_label">Student</string>
+    <string name="employee_radio_label">Employee</string>
+    <string name="other_radio_label">Other</string>
+    <string name="next_button_label">Next</string>
+    <string name="profile_title">Profile</string>
+    <string name="update_button_label">Update</string>
+    <string name="edit_user_title">Edit User Info</string>
+    <string name="edit_name_hint" />
+    <string name="edit_email_hint" />
+    <string name="cancel_button_label">Cancel</string>
+    <string name="submit_button_label">Submit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
