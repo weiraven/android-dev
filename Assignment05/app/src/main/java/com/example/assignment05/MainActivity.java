@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements WelcomeFragment.W
     @Override
     public void gotoProfile(Profile profile) {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main, ProfileFragment.newInstance(profile))
+                .replace(R.id.main, ProfileFragment.newInstance(profile), "profile-fragment")
                 .addToBackStack(null)
                 .commit();
     }
@@ -52,10 +52,12 @@ public class MainActivity extends AppCompatActivity implements WelcomeFragment.W
 
     @Override
     public void sendUpdatedProfile(Profile updatedProfile) {
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main, ProfileFragment.newInstance(updatedProfile))
-                .addToBackStack(null)
-                .commit();
+        ProfileFragment fragment =
+                (ProfileFragment) getSupportFragmentManager().findFragmentByTag("profile-fragment");
+                if(fragment != null) {
+                    fragment.setProfile(updatedProfile);
+                }
+                getSupportFragmentManager().popBackStack();
     }
 
     @Override

@@ -20,6 +20,10 @@ public class ProfileFragment extends Fragment {
     public ProfileFragment() {
         // Required empty public constructor
     }
+
+    public void setProfile(Profile profile) {
+        this.currentProfile = profile;
+    }
     public static ProfileFragment newInstance(Profile profile) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
