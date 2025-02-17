@@ -22,14 +22,14 @@ public class MainActivity extends AppCompatActivity implements WelcomeFragment.W
         });
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.main, new WelcomeFragment())
+                .add(R.id.main, new WelcomeFragment(), "welcome-fragment")
                 .commit();
     }
 
     @Override
     public void gotoCreateUser() {
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.main, new CreateUserFragment())
+                .replace(R.id.main, new CreateUserFragment(), "create-user-fragment")
                 .addToBackStack(null)
                 .commit();
     }
@@ -62,4 +62,5 @@ public class MainActivity extends AppCompatActivity implements WelcomeFragment.W
     public void cancelEdit() {
         getSupportFragmentManager().popBackStack();
     }
+
 }

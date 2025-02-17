@@ -1,5 +1,6 @@
 package com.example.assignment05;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,15 +13,13 @@ import android.view.ViewGroup;
 
 import com.example.assignment05.databinding.FragmentProfileBinding;
 
-
 public class ProfileFragment extends Fragment {
     private static final String KEY_PROFILE = "key_profile";
+    private Profile currentProfile;
 
-    private Profile mProfile;
     public ProfileFragment() {
         // Required empty public constructor
     }
-
     public static ProfileFragment newInstance(Profile profile) {
         ProfileFragment fragment = new ProfileFragment();
         Bundle args = new Bundle();
@@ -33,10 +32,9 @@ public class ProfileFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            mProfile = (Profile) getArguments().getSerializable(KEY_PROFILE);
+            currentProfile = (Profile) getArguments().getSerializable(KEY_PROFILE);
         }
     }
-
     FragmentProfileBinding binding;
 
     @Override
@@ -50,11 +48,26 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Profile");
 
-        binding.textViewUserName.setText(mProfile.getName());
-        binding.textViewUserEmail.setText(mProfile.getEmail());
-        binding.textViewUserRole.setText(mProfile.getRole());
+        binding.textViewUserName.setText(currentProfile.getName());
+        binding.textViewUserEmail.setText(currentProfile.getEmail());
+        binding.textViewUserRole.setText(currentProfile.getRole());
+
+        binding.buttonUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                profileListener.gotoEditUser(currentProfile);
+            }
+        });
     }
+    ProfileFragmentListener profileListener;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        profileListener = (ProfileFragmentListener) context;
+    }
+
     interface ProfileFragmentListener{
-        void gotoEditUser();
+        void gotoEditUser(Profile profile);
     }
 }

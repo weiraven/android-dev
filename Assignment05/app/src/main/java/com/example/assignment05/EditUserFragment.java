@@ -20,11 +20,11 @@ public class EditUserFragment extends Fragment {
 
     private static final String KEY_PROFILE = "key_profile";
 
+    private Profile originalProfile;
+
     public EditUserFragment() {
         // Required empty public constructor
     }
-
-    FragmentEditUserBinding binding;
 
     public static EditUserFragment newInstance(Profile profile) {
         EditUserFragment fragment = new EditUserFragment();
@@ -37,8 +37,12 @@ public class EditUserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(getArguments() != null){
+            originalProfile = (Profile) getArguments().getSerializable(KEY_PROFILE);
+        }
 
     }
+    FragmentEditUserBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +54,17 @@ public class EditUserFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Edit User");
+
+        binding.editTextEditName.setText(originalProfile.getName());
+        binding.editTextEditEmail.setText(originalProfile.getEmail());
+
+        if(originalProfile.getRole().equals("Student")){
+            binding.radioButtonStudentEdit.setChecked(true);
+        } else if(originalProfile.getRole().equals("Employee")){
+            binding.radioButtonEmployeeEdit.setChecked(true);
+        } else {
+            binding.radioButtonOtherEdit.setChecked(true);
+        }
 
         binding.buttonEditCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +100,6 @@ public class EditUserFragment extends Fragment {
             }
         });
     }
-
     EditUserFragmentListener editUserListener;
 
     @Override
