@@ -1,0 +1,26 @@
+<resources>
+    <string name="app_name">Demo_HW3</string>
+
+    <string name="title_bac_calculator">BAC Calculator</string>
+    <string name="weight_display">Weight: N/A</string>
+    <string name="button_set_label">Set</string>
+    <string name="num_drinks_display"># Drinks: 0</string>
+    <string name="bac_level_display">BAC Level: 0.000</string>
+    <string name="your_status_label">Your Status:</string>
+    <string name="view_drinks_button">View Drinks</string>
+    <string name="add_drink_button">Add Drink</string>
+    <string name="reset_button">Reset</string>
+    <string name="safe_status_display">You\'re safe</string>
+    <string name="set_weight_gender_title">Set Weight/Gender</string>
+    <string name="weight_label">Weight (lbs):</string>
+    <string name="enter_weight_hint">Enter weight</string>
+    <string name="gender_label">Gender:</string>
+    <string name="radio_female_label">Female</string>
+    <string name="radio_male_label">Male</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_set_profile">Set</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

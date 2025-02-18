@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BacFragment">
+
+    <TextView
+        android:id="@+id/textViewBACTitle"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="#000000"
+        android:lineSpacingExtra="8sp"
+        android:text="@string/title_bac_calculator"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewWeightDisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="64dp"
+        android:text="@string/weight_display"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonSetWeight"
+        app:layout_constraintEnd_toStartOf="@+id/buttonSetWeight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/buttonSetWeight" />
+
+    <TextView
+        android:id="@+id/textViewNumDrinksDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/num_drinks_display"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWeightDisplay" />
+
+    <TextView
+        android:id="@+id/textViewBACLevelDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/bac_level_display"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNumDrinksDisplay" />
+
+    <TextView
+        android:id="@+id/textViewYourStatusLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:text="@string/your_status_label"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewStatusColor"
+        app:layout_constraintEnd_toStartOf="@+id/viewStatusColor"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/viewStatusColor" />
+
+    <View
+        android:id="@+id/viewStatusColor"
+        android:layout_width="0dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:background="@color/safe_color"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewYourStatusLabel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBACLevelDisplay" />
+
+    <Button
+        android:id="@+id/buttonSetWeight"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:capitalize="none"
+        android:text="@string/button_set_label"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textViewWeightDisplay"
+        app:layout_constraintTop_toBottomOf="@+id/textViewBACTitle" />
+
+    <Button
+        android:id="@+id/buttonViewDrinks"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="28dp"
+        android:text="@string/view_drinks_button"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewStatusColor" />
+
+    <Button
+        android:id="@+id/buttonAddDrink"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:text="@string/add_drink_button"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonViewDrinks" />
+
+    <Button
+        android:id="@+id/buttonReset"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="28dp"
+        android:text="@string/reset_button"
+        android:textAllCaps="false"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonAddDrink" />
+
+    <TextView
+        android:id="@+id/textViewStatusDisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/safe_status_display"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewStatusColor"
+        app:layout_constraintEnd_toEndOf="@+id/viewStatusColor"
+        app:layout_constraintStart_toStartOf="@+id/viewStatusColor"
+        app:layout_constraintTop_toTopOf="@+id/viewStatusColor" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
