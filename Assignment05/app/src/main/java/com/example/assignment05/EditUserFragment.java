@@ -20,12 +20,15 @@ public class EditUserFragment extends Fragment {
 
     private static final String KEY_PROFILE = "key_profile";
 
-    private Profile originalProfile;
+    private Profile currentProfile;
 
     public EditUserFragment() {
         // Required empty public constructor
     }
 
+    public void setUpdatedProfile(Profile profile) {
+        this.currentProfile = profile;
+    }
     public static EditUserFragment newInstance(Profile profile) {
         EditUserFragment fragment = new EditUserFragment();
         Bundle args = new Bundle();
@@ -38,7 +41,7 @@ public class EditUserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if(getArguments() != null){
-            originalProfile = (Profile) getArguments().getSerializable(KEY_PROFILE);
+            currentProfile = (Profile) getArguments().getSerializable(KEY_PROFILE);
         }
 
     }
@@ -55,12 +58,12 @@ public class EditUserFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Edit User");
 
-        binding.editTextEditName.setText(originalProfile.getName());
-        binding.editTextEditEmail.setText(originalProfile.getEmail());
+        binding.editTextEditName.setText(currentProfile.getName());
+        binding.editTextEditEmail.setText(currentProfile.getEmail());
 
-        if(originalProfile.getRole().equals("Student")){
+        if(currentProfile.getRole().equals("Student")){
             binding.radioButtonStudentEdit.setChecked(true);
-        } else if(originalProfile.getRole().equals("Employee")){
+        } else if(currentProfile.getRole().equals("Employee")){
             binding.radioButtonEmployeeEdit.setChecked(true);
         } else {
             binding.radioButtonOtherEdit.setChecked(true);
