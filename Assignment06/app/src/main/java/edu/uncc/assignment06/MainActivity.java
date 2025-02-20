@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements TasksFragment.Tas
             return insets;
         });
 
+        tasks = new ArrayList<>();
+
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.main, new TasksFragment(), "tasks-fragment")
                 .commit();
@@ -52,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements TasksFragment.Tas
     @Override
     public void addTaskToList(Task task) {
         tasks.add(task);
+        getSupportFragmentManager().popBackStack();
     }
 
     @Override

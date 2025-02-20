@@ -69,22 +69,25 @@ public class CreateTaskFragment extends Fragment {
         binding.buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try{
-                    String name = binding.editTextTaskName.getText().toString();
-                    String priority = "High";
-
-                    if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonMedium){
-                        priority = "Medium";
-                    } else if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonLow){
-                        priority = "Low";
-                    }
-
-                    Task newTask = new Task(name, mDate, priority);
-                    mListener.addTaskToList(newTask);
-
-                } catch (Exception e){
-                    Toast.makeText(getActivity(), "Failed to create task.", Toast.LENGTH_SHORT).show();
+                String name = binding.editTextTaskName.getText().toString();
+                if (name.isEmpty()) {
+                    Toast.makeText(getActivity(), "Task name is required.", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if (mDate == null) {
+                    Toast.makeText(getActivity(), "Please select a valid date.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                String priority = "High";
+                if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonMedium){
+                    priority = "Medium";
+                } else if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonLow){
+                    priority = "Low";
+                }
+
+                Task newTask = new Task(name, mDate, priority);
+                mListener.addTaskToList(newTask);
             }
         });
     }
@@ -94,7 +97,11 @@ public class CreateTaskFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        mListener = (CreateTaskFragmentListener) context;
+        if (context instanceof CreateTaskFragmentListener) {
+            mListener = (CreateTaskFragmentListener) context;
+        } else {
+            throw new RuntimeException(context.toString() + " must implement CreateTaskFragmentListener");
+        }
     }
 
     interface CreateTaskFragmentListener {

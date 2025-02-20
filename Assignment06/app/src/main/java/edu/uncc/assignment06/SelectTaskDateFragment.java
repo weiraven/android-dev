@@ -41,6 +41,9 @@ public class SelectTaskDateFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Select Task Date");
 
+        // Set the maximum date to today
+        binding.calendarView.setMaxDate(System.currentTimeMillis());
+
         binding.calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -65,9 +68,12 @@ public class SelectTaskDateFragment extends Fragment {
         binding.buttonSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.submitSelectDate(selectedDate);
+                if (selectedDate == null) {
+                    Toast.makeText(getContext(), "A date is required.", Toast.LENGTH_SHORT).show();
+                } else {
+                    mListener.submitSelectDate(selectedDate);
+                }
             }
-
         });
     }
 

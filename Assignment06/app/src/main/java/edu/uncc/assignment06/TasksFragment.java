@@ -12,13 +12,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import edu.uncc.assignment06.databinding.FragmentTasksBinding;
 
 public class TasksFragment extends Fragment {
 
     private ArrayList<Task> taskList;
+    private int currentTaskIndex = 0;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -42,15 +46,11 @@ public class TasksFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Tasks");
         taskList = mListener.getTaskList();
+        sortTaskListByDateDescending();
         updateTaskCount();
-        int taskCounter = 1;
-
-        for (Task task : taskList) {
-            binding.textViewTaskName.setText(task.getName());
-            binding.textViewTaskDate.setText(task.getDate().toString());
-            binding.textViewTaskPriority.setText(task.getPriority());
-            binding.textViewTaskOutOf.setText("Task " + taskCounter + " of " + taskList.size());
-            taskCounter++;
+        updateCardViewVisibility();
+        if (taskList != null && !taskList.isEmpty()) {
+            displayTask(currentTaskIndex);
         }
 
         binding.buttonCreateTask.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +59,65 @@ public class TasksFragment extends Fragment {
                 mListener.goToCreateTask();
             }
         });
+
+        // Click listener for "Previous" icon
+        binding.cardViewTask.findViewById(R.id.imageViewPrevious).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentTaskIndex > 0) {
+                    currentTaskIndex--;
+                    displayTask(currentTaskIndex);
+                }
+            }
+        });
+
+        // Click listener for "Next" icon
+        binding.cardViewTask.findViewById(R.id.imageViewNext).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               if (currentTaskIndex < taskList.size() - 1){
+                   currentTaskIndex++;
+                   displayTask(currentTaskIndex);
+               }
+           }
+        });
+
+        binding.cardViewTask.findViewById(R.id.imageViewDelete).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(taskList != null && !taskList.isEmpty()) {
+                    mListener.deleteTask(taskList.get(currentTaskIndex));
+                }
+                taskList = mListener.getTaskList();
+                sortTaskListByDateDescending();
+                updateTaskCount();
+                updateCardViewVisibility();
+                if (taskList.isEmpty()) {
+                    clearTaskDetails();
+                } else {
+                    if (currentTaskIndex >= taskList.size()) {
+                        currentTaskIndex = taskList.size() - 1;
+                    }
+                    displayTask(currentTaskIndex);
+                }
+            }
+        });
+    }
+
+    private void displayTask(int index) {
+        Task task = taskList.get(index);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskName)).setText(task.getName());
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskDate)).setText(sdf.format(task.getDate()));
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskPriority)).setText(task.getPriority());
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskOutOf)).setText("Task " + (index + 1) + " of " + taskList.size());
+    }
+
+    private void clearTaskDetails() {
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskName)).setText("");
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskDate)).setText("");
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskPriority)).setText("");
+        ((TextView) binding.cardViewTask.findViewById(R.id.textViewTaskOutOf)).setText("");
     }
 
     private void updateTaskCount() {
@@ -68,6 +127,25 @@ public class TasksFragment extends Fragment {
             binding.textViewTasksCount.setText("You have 1 task");
         } else {
             binding.textViewTasksCount.setText("You have " + taskList.size() + " tasks");
+        }
+    }
+
+    private void updateCardViewVisibility() {
+        if (taskList == null || taskList.isEmpty()) {
+            binding.cardViewTask.setVisibility(View.GONE);
+        } else {
+            binding.cardViewTask.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void sortTaskListByDateDescending() {
+        if (taskList != null) {
+            Collections.sort(taskList, new Comparator<Task>() {
+                @Override
+                public int compare(Task t1, Task t2) {
+                    return t1.getDate().compareTo(t2.getDate());
+                }
+            });
         }
     }
 
