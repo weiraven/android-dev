@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements BacFragment.BacFragmentListener, SetProfileFragment.SetProfileFragmentListener {
+public class MainActivity extends AppCompatActivity implements BacFragment.BacFragmentListener, SetProfileFragment.SetProfileFragmentListener, AddDrinkFragment.AddDrinkFragmentListener, ViewDrinksFragment.ViewDrinksFragmentListener {
 
     ArrayList<Drink> drinks = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements BacFragment.BacFr
 
 
     @Override
-    public void gotoSetProfile() {
+    public void goToSetProfile() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.main, new SetProfileFragment(), "profile-fragment")
                 .addToBackStack(null)
@@ -47,6 +47,22 @@ public class MainActivity extends AppCompatActivity implements BacFragment.BacFr
     @Override
     public ArrayList<Drink> getAllDrinks() {
         return this.drinks;
+    }
+
+    @Override
+    public void goToAddDrink() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main, new AddDrinkFragment(), "add-drink-fragment")
+                .addToBackStack(null)
+                .commit();
+    }
+
+    @Override
+    public void goToViewDrinks() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.main, ViewDrinksFragment.newInstance(drinks), "view-drinks-fragment")
+                .addToBackStack(null)
+                .commit();
     }
 
     @Override
@@ -66,4 +82,21 @@ public class MainActivity extends AppCompatActivity implements BacFragment.BacFr
         //pop backstack
         getSupportFragmentManager().popBackStack();
     }
+
+    @Override
+    public void sendDrink(Drink drink) {
+        drinks.add(drink);
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void cancelAddDrink() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void cancelViewDrinks() {
+        getSupportFragmentManager().popBackStack();
+    }
+
 }

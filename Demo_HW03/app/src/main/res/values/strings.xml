@@ -21,6 +21,15 @@
     <string name="button_set_profile">Set</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_drink_title">Add Drink</string>
+    <string name="drink_size_label">Drink Size:</string>
+    <string name="alcohol_percent_label">Alcohol %:</string>
+    <string name="one_oz_label">1 oz</string>
+    <string name="five_oz">5 oz</string>
+    <string name="twelve_oz">12 oz</string>
+    <string name="alcohol_percentage">12%</string>
+    <string name="view_drinks_title">View Drinks</string>
+    <string name="cancel_view_drinks_label">Cancel</string>
 
 
 </resources>

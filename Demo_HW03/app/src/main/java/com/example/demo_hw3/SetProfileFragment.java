@@ -44,14 +44,17 @@ public class SetProfileFragment extends Fragment {
             public void onClick(View v) {
                 try{
                     double weight = Double.valueOf(binding.editTextEnterWeight.getText().toString());
-                    String gender = "Female";
-                    if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonMale){
-                        gender = "Male";
+                    if(weight > 0) {
+                        String gender = "Female";
+                        if(binding.radioGroup.getCheckedRadioButtonId() == R.id.radioButtonMale){
+                            gender = "Male";
+                        }
+
+                        Profile profile = new Profile(weight, gender);
+                        mListener.sendProfile(profile);
+                    } else {
+                        Toast.makeText(getActivity(), "Enter valid weight", Toast.LENGTH_SHORT).show();
                     }
-
-                    Profile profile = new Profile(weight, gender);
-                    mListener.sendProfile(profile);
-
                 } catch (NumberFormatException e){
                     Toast.makeText(getActivity(), "Enter valid weight", Toast.LENGTH_SHORT).show();
                 }

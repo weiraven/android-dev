@@ -82,6 +82,7 @@
             style="@style/Widget.AppCompat.CompoundButton.RadioButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/radio_female_label"
             android:textSize="16sp" />
 
