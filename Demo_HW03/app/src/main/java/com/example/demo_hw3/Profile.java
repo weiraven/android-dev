@@ -1,5 +1,4 @@
 package com.example.demo_hw3;
-
 public class Profile {
     double weight;
     String gender;
