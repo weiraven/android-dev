@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Assessment2</string>
+    <string name="calorie_calculator_title" />
+    <string name="calorie_calc_title">Calorie Calculator</string>
+    <string name="gender_display">Gender: N/A</string>
+    <string name="weight_display">Weight (lbs): N/A</string>
+    <string name="height_display">Height: N/A</string>
+    <string name="age_display">Age: N/A</string>
+    <string name="activity_level_display">Activity Level: N/A</string>
+    <string name="button_submit_label">Submit</string>
+    <string name="button_select_label">Select</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="select_gender_title">Select Gender</string>
+    <string name="select_activity_level_title">Activity Level</string>
+    <string name="select_weight_title">Select Weight</string>
+    <string name="select_height_title">Select Height</string>
+    <string name="gender_label">Gender:</string>
+    <string name="radio_label_female">Female</string>
+    <string name="radio_label_male">Male</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_submit">Submit</string>
+    <string name="weight_label">Weight (lbs):</string>
+    <string name="weight_hint">Enter Weight</string>
+    <string name="height_label">Height (in):</string>
+    <string name="height_feet_hint">Enter height ft</string>
+    <string name="height_inches_hint">Enter height in</string>
+    <string name="select_age_title">Select Age</string>
+    <string name="age_label">Age (Years):</string>
+    <string name="age_hint">Enter age</string>
+    <string name="button_sedentary">Sedentary</string>
+    <string name="button_lightly_active">Lightly Active</string>
+    <string name="button_mod_active">Moderately Active</string>
+    <string name="button_very_active">Very Active</string>
+    <string name="button_super_active">Super Active</string>
+    <string name="bmr_info" />
+</resources>
