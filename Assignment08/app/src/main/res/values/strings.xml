@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Assignment06</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="summary_name_label">Name:</string>
+    <string name="summary_priority_label">Priority:</string>
+    <string name="summary_date_label">Date:</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_back">Back</string>
+</resources>
