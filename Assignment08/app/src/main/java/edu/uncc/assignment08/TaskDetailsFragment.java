@@ -55,7 +55,17 @@ public class TaskDetailsFragment extends Fragment {
 
         if (mTask != null) {
             binding.textViewTaskNameDisplay.setText(mTask.getName());
-            binding.textViewPriorityDisplay.setText(mTask.getDate().toString());
+
+            String taskPriority;
+            if (mTask.getPriority() == 2){
+                taskPriority = "Medium";
+            } else if (mTask.getPriority() == 3) {
+                taskPriority = "High";
+            } else {
+                taskPriority = "Low";
+            }
+
+            binding.textViewPriorityDisplay.setText(taskPriority);
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
             binding.textViewDateDisplay.setText(sdf.format(mTask.getDate()));
         }

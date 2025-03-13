@@ -15,7 +15,7 @@ import edu.uncc.assignment08.models.SortSelection;
 import edu.uncc.assignment08.models.Task;
 
 public class MainActivity extends AppCompatActivity implements TasksFragment.TasksListener,
-        CreateTaskFragment.CreateTaskListener, SelectTaskDateFragment.SelectTaskDateListener, SortFragment.SortListener {
+        CreateTaskFragment.CreateTaskListener, SelectTaskDateFragment.SelectTaskDateListener, SortFragment.SortListener, TaskDetailsFragment.TaskDetailsListener {
 
     ArrayList<Task> mTasks = new ArrayList<>(); // List of tasks
 
@@ -105,5 +105,16 @@ public class MainActivity extends AppCompatActivity implements TasksFragment.Tas
                 .replace(R.id.main, new SelectTaskDateFragment())
                 .addToBackStack(null)
                 .commit();
+    }
+
+    @Override
+    public void deleteTask(Task task) {
+        mTasks.remove(task);
+        getSupportFragmentManager().popBackStack();
+    }
+
+    @Override
+    public void goBack() {
+        getSupportFragmentManager().popBackStack();
     }
 }
