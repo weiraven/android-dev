@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Assignment10</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cityTitle">Cities</string>
+    <string name="cityNameLabel">City Name, State</string>
+    <string name="forecast_label">Forecast</string>
+</resources>
