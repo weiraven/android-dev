@@ -3,13 +3,23 @@ package edu.uncc.assignment11.models;
 import java.io.Serializable;
 
 public class ToDoList implements Serializable {
-    String name;
+    private int todolistId;
+    private String name;
 
     public ToDoList() {
     }
 
-    public ToDoList(String name) {
+    public ToDoList(int todolistId, String name) {
+        this.todolistId = todolistId;
         this.name = name;
+    }
+
+    public int getTodolistId() {
+        return todolistId;
+    }
+
+    public void setTodolistId(int todolistId) {
+        this.todolistId = todolistId;
     }
 
     public String getName() {

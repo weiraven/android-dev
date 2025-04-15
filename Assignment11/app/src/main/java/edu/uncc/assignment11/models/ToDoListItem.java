@@ -1,15 +1,21 @@
 package edu.uncc.assignment11.models;
 
 public class ToDoListItem {
+    int itemId;
     String name;
     String priority;
 
     public ToDoListItem() {
     }
 
-    public ToDoListItem(String name, String priority) {
+    public ToDoListItem(int id, String name, String priority) {
+        this.itemId = id;
         this.name = name;
         this.priority = priority;
+    }
+
+    public int getItemId() {
+        return itemId;
     }
 
     public String getName() {

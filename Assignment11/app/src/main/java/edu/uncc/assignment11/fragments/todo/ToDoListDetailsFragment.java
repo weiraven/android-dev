@@ -1,5 +1,6 @@
 package edu.uncc.assignment11.fragments.todo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,22 +9,36 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
+import edu.uncc.assignment11.MainActivity;
 import edu.uncc.assignment11.R;
 import edu.uncc.assignment11.databinding.FragmentListDetailsBinding;
 import edu.uncc.assignment11.databinding.ListItemListItemBinding;
 import edu.uncc.assignment11.models.ToDoList;
 import edu.uncc.assignment11.models.ToDoListItem;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class ToDoListDetailsFragment extends Fragment {
     private static final String ARG_PARAM_TODO_LIST= "ARG_PARAM_TODO_LIST";
@@ -42,6 +57,9 @@ public class ToDoListDetailsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    ArrayList<ToDoListItem> mToDoListItems = new ArrayList<>();
+    ToDoListItemAdapter adapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +68,6 @@ public class ToDoListDetailsFragment extends Fragment {
         }
     }
 
-    ArrayList<ToDoListItem> mToDoListItems = new ArrayList<>();
-    ToDoListItemAdapter adapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentListDetailsBinding.inflate(inflater, container, false);
@@ -93,12 +109,139 @@ public class ToDoListDetailsFragment extends Fragment {
     }
 
     void loadToDoListItems(){
-        //TODO: Load the items for the to do list using the api
+        final Activity activity = getActivity();
+        if (activity == null) return;
+
+        String token = activity.getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                .getString("token", null);
+        if(token == null || token.isEmpty()){
+            activity.runOnUiThread(() ->
+                    Toast.makeText(getContext(), "No token found", Toast.LENGTH_SHORT).show());
+            return;
+        }
+
+        String url = "https://www.theappsdr.com/api/todolists/" + mToDoList.getTodolistId();
+        Request request = new Request.Builder()
+                .url(url)
+                .header("Authorization", "BEARER " + token)
+                .build();
+
+        ((MainActivity) activity).getHttpClient().newCall(request).enqueue(new Callback(){
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Activity act = getActivity();
+                if(act != null){
+                    act.runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Failed to load list items", Toast.LENGTH_SHORT).show());
+                }
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Activity act = getActivity();
+                if(act == null) return;
+                okhttp3.ResponseBody responseBodyObj = response.body();
+                if(responseBodyObj == null){
+                    act.runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Empty response", Toast.LENGTH_SHORT).show());
+                    return;
+                }
+                String responseBody = responseBodyObj.string();
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+                    if("ok".equals(jsonResponse.optString("status"))){
+                        JSONObject todoListObj = jsonResponse.getJSONObject("todolist");
+                        JSONArray itemsArray = todoListObj.getJSONArray("items");
+                        mToDoListItems.clear();
+                        for (int i = 0; i < itemsArray.length(); i++){
+                            JSONObject itemObj = itemsArray.getJSONObject(i);
+                            int itemId = itemObj.getInt("todolist_item_id");
+                            String name = itemObj.getString("name");
+                            String priority = itemObj.getString("priority");
+                            ToDoListItem item = new ToDoListItem(itemId, name, priority);
+                            mToDoListItems.add(item);
+                        }
+                        act.runOnUiThread(() -> adapter.notifyDataSetChanged());
+                    }
+                    else{
+                        final String error = jsonResponse.optString("message", "Failed to load items");
+                        act.runOnUiThread(() ->
+                                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
+                    }
+                } catch (JSONException e) {
+                    act.runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Error parsing response", Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
     }
 
-    void deleteToDoListItem(ToDoListItem toDoListItem){
-        //TODO: Delete the item using the api
-        //TODO: Reload the items for the to do list using the api
+    void deleteToDoListItem(final ToDoListItem toDoListItem){
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete ToDo Item")
+                .setMessage("Are you sure you want to delete this ToDo Item?")
+                .setPositiveButton("OK", (dialog, which) -> {
+                    Activity activity = getActivity();
+                    if (activity == null) return;
+
+                    String token = activity.getSharedPreferences(
+                                    getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                            .getString("token", null);
+                    if (token == null || token.isEmpty()){
+                        Toast.makeText(getContext(), "No token found", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    String url = "https://www.theappsdr.com/api/todolist-items/delete";
+                    RequestBody formBody = new FormBody.Builder()
+                            .add("todolist_id", String.valueOf(mToDoList.getTodolistId()))
+                            .add("todolist_item_id", String.valueOf(toDoListItem.getItemId()))
+                            .build();
+                    Request request = new Request.Builder()
+                            .url(url)
+                            .post(formBody)
+                            .header("Authorization", "BEARER " + token)
+                            .build();
+
+                    ((MainActivity) activity).getHttpClient().newCall(request).enqueue(new Callback(){
+                        @Override
+                        public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                            Activity act = getActivity();
+                            if(act != null){
+                                act.runOnUiThread(() ->
+                                        Toast.makeText(getContext(), "Failed to delete item", Toast.LENGTH_SHORT).show());
+                            }
+                        }
+
+                        @Override
+                        public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                            Activity act = getActivity();
+                            if(act == null) return;
+                            String responseBody = response.body().string();
+                            try {
+                                JSONObject jsonResponse = new JSONObject(responseBody);
+                                if("ok".equals(jsonResponse.optString("status"))){
+                                    act.runOnUiThread(() -> {
+                                        Toast.makeText(getContext(), "ToDo Item deleted", Toast.LENGTH_SHORT).show();
+                                        // Reload the list items upon successful deletion.
+                                        loadToDoListItems();
+                                    });
+                                }
+                                else{
+                                    final String error = jsonResponse.optString("message", "Deletion failed");
+                                    act.runOnUiThread(() ->
+                                            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
+                                }
+                            } catch (JSONException e) {
+                                act.runOnUiThread(() ->
+                                        Toast.makeText(getContext(), "Error parsing deletion response", Toast.LENGTH_SHORT).show());
+                            }
+                        }
+                    });
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 
     class ToDoListItemAdapter extends RecyclerView.Adapter<ToDoListItemAdapter.ToDoListItemViewHolder>{

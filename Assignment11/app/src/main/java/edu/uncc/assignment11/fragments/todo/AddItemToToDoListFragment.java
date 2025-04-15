@@ -1,5 +1,6 @@
 package edu.uncc.assignment11.fragments.todo;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -12,13 +13,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import edu.uncc.assignment11.MainActivity;
 import edu.uncc.assignment11.R;
 import edu.uncc.assignment11.databinding.FragmentAddItemToToDoListBinding;
 import edu.uncc.assignment11.models.ToDoList;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.FormBody;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 public class AddItemToToDoListFragment extends Fragment {
     private static final String ARG_PARAM_TODO_LIST = "ARG_PARAM_TODO_LIST";
     private ToDoList mTodoList;
+    FragmentAddItemToToDoListBinding binding;
 
     public AddItemToToDoListFragment() {
         // Required empty public constructor
@@ -39,8 +53,6 @@ public class AddItemToToDoListFragment extends Fragment {
             mTodoList = (ToDoList) getArguments().getSerializable(ARG_PARAM_TODO_LIST);
         }
     }
-
-    FragmentAddItemToToDoListBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -73,14 +85,66 @@ public class AddItemToToDoListFragment extends Fragment {
                     } else if(checkedId == R.id.radioButtonHigh){
                         priority = "High";
                     }
-                    //TODO: Add new todo list item to the list using the api
+                    createNewTodoListItem(itemName, priority);
                 }
             }
         });
 
 
     }
+    private void createNewTodoListItem(String name, String priority) {
+        final Activity activity = getActivity();
+        if (activity == null) return;
 
+        String token = activity.getSharedPreferences(
+                        getString(R.string.preference_file_key), Context.MODE_PRIVATE)
+                .getString("token", null);
+        if (token == null || token.isEmpty()) {
+            Toast.makeText(getContext(), "No token found", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String url = "https://www.theappsdr.com/api/todolist-items/create";
+        RequestBody formBody = new FormBody.Builder()
+                .add("todolist_id", String.valueOf(mTodoList.getTodolistId()))
+                .add("name", name)
+                .add("priority", priority)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(url)
+                .post(formBody)
+                .header("Authorization", "BEARER " + token)
+                .build();
+
+        ((MainActivity) activity).getHttpClient().newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                activity.runOnUiThread(() ->
+                        Toast.makeText(getContext(), "Failed to create item", Toast.LENGTH_SHORT).show());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                Activity act = getActivity();
+                if (act == null) return;
+                String responseBody = response.body().string();
+                try {
+                    JSONObject jsonResponse = new JSONObject(responseBody);
+                    if ("ok".equals(jsonResponse.optString("status"))) {
+                        act.runOnUiThread(() -> mListener.onSuccessAddItemToList());
+                    } else {
+                        final String error = jsonResponse.optString("message", "Creation failed");
+                        act.runOnUiThread(() ->
+                                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show());
+                    }
+                } catch (JSONException e) {
+                    act.runOnUiThread(() ->
+                            Toast.makeText(getContext(), "Error parsing response", Toast.LENGTH_SHORT).show());
+                }
+            }
+        });
+    }
     AddItemToListListener mListener;
 
     @Override

@@ -23,4 +23,5 @@
     <string name="filter_desc_label">Select the credit score filtering criteria (Greater than or equal to the selected category)</string>
     <string name="no_filter_label">No Filter</string>
     <string name="logout_label">Logout</string>
+    <string name="preference_file_key">APP_PREFS</string>
 </resources>

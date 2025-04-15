@@ -39,4 +39,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
 }
